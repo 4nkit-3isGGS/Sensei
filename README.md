@@ -123,7 +123,7 @@ graph LR
 ---
 
 ## 📸 Interface Preview
-![Gradio Demo UI](codereview_sensei/p1.png)
+![Gradio Demo UI](p1.png)
 
 ---
 
