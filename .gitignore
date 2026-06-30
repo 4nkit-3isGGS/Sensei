@@ -1,0 +1,17 @@
+# Environment variables / Credentials
+.env
+codereview_sensei/.env
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*/__pycache__/
+
+# Gradio files / local certificates
+.gradio/
+codereview_sensei/.gradio/
+
+# Local Style memory files
+codereview_sensei/memory/team_style_memory.json
