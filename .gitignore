@@ -15,3 +15,6 @@ codereview_sensei/.gradio/
 
 # Local Style memory files
 codereview_sensei/memory/team_style_memory.json
+
+# Local helper scripts
+push_to_github.py
