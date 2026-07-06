@@ -91,13 +91,13 @@ Response schema:
             for item in data.get("findings", [])
         ]
 
-    async def review(self, files: list[PRFile]) -> list[ReviewFinding]:
+    def review(self, files: list[PRFile]) -> list[ReviewFinding]:
         if not files:
             return []
         mem = self._load_memory()
         prompt = self._build_prompt(files, json.dumps(mem.get("patterns", []), indent=2))
         try:
-            res = await self.model.generate_content_async(prompt)
+            res = self.model.generate_content(prompt)
             data = json.loads(res.text)
             self._update_patterns(mem, data.get("new_patterns", []))
             self._save_memory(mem)

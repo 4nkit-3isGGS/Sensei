@@ -73,13 +73,13 @@ Do NOT return anything except valid JSON.
             )
         return findings
 
-    async def review(self, files: list[PRFile]) -> list[ReviewFinding]:
-        """Reviews the list of PR files asynchronously."""
+    def review(self, files: list[PRFile]) -> list[ReviewFinding]:
+        """Reviews the list of PR files."""
         if not files:
             return []
         prompt = self._build_prompt(files)
         try:
-            response = await self.model.generate_content_async(prompt)
+            response = self.model.generate_content(prompt)
             data = json.loads(response.text)
             return self._parse_findings(data)
         except Exception as e:
