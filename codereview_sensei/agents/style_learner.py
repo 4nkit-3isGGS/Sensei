@@ -8,7 +8,7 @@ from models import PRFile, ReviewFinding
 class StyleLearnerAgent:
     def __init__(self) -> None:
         genai.configure(api_key=GEMINI_API_KEY)
-        self.model = genai.GenerativeModel("gemini-2.5-flash", generation_config={"response_mime_type": "application/json"})
+        self.model = genai.GenerativeModel("gemini-2.0-flash", generation_config={"response_mime_type": "application/json"})
         self.memory_path = os.path.join(os.path.dirname(__file__), "..", "memory", "team_style_memory.json")
         os.makedirs(os.path.dirname(self.memory_path), exist_ok=True)
 

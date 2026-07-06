@@ -7,7 +7,7 @@ class StyleReviewerAgent:
     def __init__(self) -> None:
         genai.configure(api_key=GEMINI_API_KEY)
         self.model = genai.GenerativeModel(
-            model_name="gemini-2.5-flash",
+            model_name="gemini-2.0-flash",
             generation_config={"response_mime_type": "application/json"}
         )
         self.system_prompt = (
