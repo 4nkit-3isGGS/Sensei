@@ -10,7 +10,6 @@ from output_layer import GitHubOutputLayer
 
 # Initialize Layers
 input_layer = GitHubInputLayer()
-orchestrator = OrchestratorAgent()
 merger = ReviewMerger()
 output_layer = GitHubOutputLayer()
 
@@ -129,7 +128,7 @@ def build_findings_html(findings: list, agent_filter: str = None) -> str:
     html += "</div>"
     return html
 
-def review_pr(pr_url: str):
+async def review_pr(pr_url: str):
     pr_url = pr_url.strip()
     if not pr_url:
         yield ("❌ Error: PR URL cannot be empty.", "", *[""]*5, "", None, "", None, None)
@@ -148,7 +147,8 @@ def review_pr(pr_url: str):
         log += "  ⚙️  Style Learner    → running\n"
         yield (log, "", *[""]*5, "", None, "", None, None)
         
-        results = asyncio.run(orchestrator.run_all(pr_chunk.files))
+        orchestrator = OrchestratorAgent()
+        results = await orchestrator.run_all(pr_chunk.files)
         
         log += f"\n  ✅ Bug Hunter       → {len(results['bug_hunter'])} findings\n"
         log += f"  ✅ Security Auditor → {len(results['security_auditor'])} findings\n"
@@ -226,7 +226,12 @@ css_code = """
 }
 """
 
-with gr.Blocks(title="CodeReview Sensei") as demo:
+with gr.Blocks(
+    title="CodeReview Sensei",
+    theme=gr.themes.Soft(primary_hue="purple", secondary_hue="blue", neutral_hue="slate"),
+    css=css_code,
+    js="() => document.body.classList.add('dark')"
+) as demo:
     gr.HTML("""
     <div style="text-align: center; margin-bottom: 20px;">
         <h1 style="color: #f5c2e7; margin-bottom: 0;">🤖 CodeReview Sensei</h1>
@@ -304,4 +309,9 @@ with gr.Blocks(title="CodeReview Sensei") as demo:
     )
 
 if __name__ == "__main__":
-    demo.launch(share=True, debug=True, show_error=True, theme=gr.themes.Soft(primary_hue="purple", secondary_hue="blue", neutral_hue="slate"), css=css_code, js="() => document.body.classList.add('dark')")
+    is_hf_space = os.getenv("SPACE_ID") is not None
+    demo.launch(
+        share=not is_hf_space,
+        debug=True,
+        show_error=True
+    )
