@@ -11,12 +11,12 @@ class GitHubOutputLayer:
         try:
             g = Github(GITHUB_TOKEN)
             user = g.get_user()
-            rl = g.get_rate_limit().core
+            rl = g.get_rate_limit().rate
             return {
                 "valid": True,
                 "username": user.login,
                 "rate_limit_remaining": rl.remaining,
-                "rate_limit_reset": rl.reset.isoformat() + "Z" if rl.reset else ""
+                "rate_limit_reset": rl.reset.isoformat() if rl.reset else ""
             }
         except GithubException as e:
             return {"valid": False, "error": str(e)}
